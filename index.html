@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="KluYK-jj_ZW_kzC-NbD_qLHxuhk1Exmho8TTvUO-sf8" />
     <title>GROWWBONDHU | Live Mainboard IPO Tracker & Funding Hub</title>
     
     <!-- Tailwind CSS CDN -->
@@ -383,7 +384,7 @@
 
         async function fetchAutoIPOData() {
             try {
-                const response = await fetch('http://localhost:5000/api/ipos', { signal: AbortSignal.timeout(8000) });
+                const response = await fetch('/api/ipos', { signal: AbortSignal.timeout(8000) });
                 if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
                 const liveData = await response.json();
                 if (Array.isArray(liveData) && liveData.length > 0) return liveData;
