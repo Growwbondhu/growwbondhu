@@ -196,7 +196,7 @@
                 <i class="fa-solid fa-chart-simple text-emerald-400"></i> Mainboard IPOs Dashboard
             </h2>
             <span class="text-xs text-emerald-400 bg-emerald-950/70 border border-emerald-500/30 px-3 py-1.5 rounded-full w-fit flex items-center gap-2">
-                <span class="pulse-dot"></span> <span id="visible-count">Syncing Live Data...</span>
+                <span class="pulse-dot"></span> <span id="visible-count">Fetching Real-time Feed...</span>
             </span>
         </div>
 
@@ -214,8 +214,13 @@
             </div>
         </div>
 
-        <!-- IPO Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" id="ipo-grid"></div>
+        <!-- IPO Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" id="ipo-grid">
+            <div class="col-span-full text-center py-16 text-slate-400">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl text-emerald-400 mb-3"></i>
+                <p class="text-sm">Connecting to live market API & loading real-time IPOs...</p>
+            </div>
+        </div>
 
         <!-- Capital Funding Support -->
         <section class="glass-card rounded-3xl p-8 mb-16 border border-emerald-500/30 relative overflow-hidden" id="funding">
@@ -340,12 +345,6 @@
             { name: "Arihant Jain", phone: "918100669957" }
         ];
 
-        const defaultFallbackData = [
-            { name: "Premier Energies Ltd", status: "Closed", priceBand: "₹427 - ₹450", gmp: "₹385 (85%)", issueSize: "₹2,830 Cr", lotSize: "33 Shares", openDate: "27 Aug", closeDate: "29 Aug", subQIB: "216.7x", subNII: "50.1x", subRetail: "7.4x", subTotal: "74.4x" },
-            { name: "ECOS India Mobility", status: "Closed", priceBand: "₹318 - ₹334", gmp: "₹160 (48%)", issueSize: "₹601 Cr", lotSize: "44 Shares", openDate: "28 Aug", closeDate: "30 Aug", subQIB: "136.8x", subNII: "71.2x", subRetail: "19.7x", subTotal: "64.2x" },
-            { name: "Bajaj Housing Finance", status: "Upcoming", priceBand: "₹66 - ₹70", gmp: "₹55 (78%)", issueSize: "₹6,560 Cr", lotSize: "214 Shares", openDate: "09 Sep", closeDate: "11 Sep", subQIB: "-", subNII: "-", subRetail: "-", subTotal: "Upcoming" }
-        ];
-
         const policyDatabase = {
             about: {
                 title: "About GROWWBONDHU",
@@ -384,18 +383,18 @@
 
         async function fetchAutoIPOData() {
             try {
-                const response = await fetch('/api/ipos', { signal: AbortSignal.timeout(8000) });
+                const response = await fetch('/api/ipos');
                 if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
                 const liveData = await response.json();
                 if (Array.isArray(liveData) && liveData.length > 0) return liveData;
-                return defaultFallbackData;
+                return [];
             } catch (error) {
-                console.warn("Backend not reached / API timed out. Displaying fallback data.", error);
+                console.error("Failed to load live data:", error);
                 const dot = document.getElementById('feed-status-dot');
                 const text = document.getElementById('feed-status-text');
-                if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-amber-500";
-                if (text) text.innerHTML = "IPO Feed: <span class='text-amber-400 font-semibold'>Cached/Fallback</span>";
-                return defaultFallbackData;
+                if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-rose-500";
+                if (text) text.innerHTML = "IPO Feed: <span class='text-rose-400 font-semibold'>Connection Error</span>";
+                return [];
             }
         }
 
@@ -416,22 +415,32 @@
             lastUpdatedTime.textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) + `, ` + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
             function updateSummaryCounts(data) {
-                document.getElementById('count-open').textContent = data.filter(x => x.status === 'Open').length;
-                document.getElementById('count-upcoming').textContent = data.filter(x => x.status === 'Upcoming').length;
-                document.getElementById('count-closed').textContent = data.filter(x => x.status === 'Closed').length;
+                document.getElementById('count-open').textContent = data.filter(x => x.status.toLowerCase() === 'open').length;
+                document.getElementById('count-upcoming').textContent = data.filter(x => x.status.toLowerCase() === 'upcoming').length;
+                document.getElementById('count-closed').textContent = data.filter(x => x.status.toLowerCase() === 'closed').length;
                 document.getElementById('count-total').textContent = data.length;
             }
 
             function renderCards(data) {
                 gridContainer.innerHTML = '';
-                let count = 0;
+                
+                if (data.length === 0) {
+                    gridContainer.innerHTML = `
+                        <div class="col-span-full text-center py-12 text-slate-400">
+                            <i class="fa-solid fa-magnifying-glass text-2xl text-slate-500 mb-2"></i>
+                            <p class="text-sm">No Mainboard IPOs found for the selected category.</p>
+                        </div>`;
+                    visibleCountSpan.textContent = `0 Mainboard IPOs`;
+                    return;
+                }
 
+                let count = 0;
                 data.forEach((ipo) => {
                     let statusBg = 'bg-emerald-950/70 text-emerald-400 border border-emerald-500/30';
-                    if (ipo.status === 'Upcoming') statusBg = 'bg-cyan-950/70 text-cyan-400 border border-cyan-500/30';
-                    if (ipo.status === 'Closed') statusBg = 'bg-rose-950/70 text-rose-400 border border-rose-500/30';
+                    if (ipo.status.toLowerCase() === 'upcoming') statusBg = 'bg-cyan-950/70 text-cyan-400 border border-cyan-500/30';
+                    if (ipo.status.toLowerCase() === 'closed') statusBg = 'bg-rose-950/70 text-rose-400 border border-rose-500/30';
 
-                    let actionButtonsHTML = (ipo.status === 'Closed')
+                    let actionButtonsHTML = (ipo.status.toLowerCase() === 'closed')
                         ? `<div class="pt-2 border-t border-slate-800/80">
                                <button onclick="openExecutiveModal('whatsapp', 'Listing Strategy for ${ipo.name}')" class="w-full bg-[#081525] hover:bg-slate-800 text-cyan-400 font-semibold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 border border-cyan-500/40">
                                    <i class="fa-solid fa-arrow-trend-up text-sm"></i> Discuss Listing Strategy
