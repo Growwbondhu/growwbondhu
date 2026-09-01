@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GROWWBONDHU | Live Mainboard IPO Tracker & Funding Hub</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome & Lucide Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050b14;
+            color: #cbd5e1;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(10, 18, 30, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        .tab-btn.active {
+            background-color: #10b981 !important;
+            color: #050b14 !important;
+            font-weight: 700;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            animation: pulse-ring 1.6s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(10, 18, 30, 0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.4);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(16, 185, 129, 0.7);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Vector Chart Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+        <div class="absolute -top-24 right-0 w-[600px] h-[600px] bg-emerald-500/15 blur-[120px] rounded-full"></div>
+        <div class="absolute top-10 right-40 w-[450px] h-[450px] bg-red-500/15 blur-[100px] rounded-full"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white px-6 py-2 shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 decoration-transparent">
+                <div class="h-12 w-12 flex items-center justify-center">
+                    <img src="./logo.png" alt="GROWWBONDHU" class="h-full w-full object-contain filter drop-shadow-sm" onerror="this.onerror=null; this.src='logo.png';">
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5 leading-none">
+                        <span class="font-extrabold text-xl tracking-tight text-slate-900">GROWW</span>
+                        <span class="font-extrabold text-xl tracking-tight text-emerald-600">BONDHU</span>
+                    </div>
+                    <p class="text-[10px] font-semibold text-slate-500 tracking-wider mt-0.5">Live IPO Hub • Data • Insight • Growth</p>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
+                <a href="javascript:void(0)" onclick="openPolicyPage('about')" class="text-slate-700 hover:text-emerald-600 transition">Why Us</a>
+                <a href="#live-ipo" class="text-emerald-600 border-b-2 border-emerald-600 pb-0.5 font-bold">IPOs Dashboard</a>
+                <a href="#funding" class="text-slate-700 hover:text-emerald-600 transition">IPO Funding</a>
+                <a href="javascript:void(0)" onclick="openExecutiveModal('whatsapp', 'General Inquiry')" class="text-slate-700 hover:text-emerald-600 transition">Call / WhatsApp</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full relative z-10">
+        
+        <div class="mb-8">
+            <h1 class="text-2xl md:text-3xl font-bold text-white max-w-2xl leading-snug">
+                Live IPO information, indicative GMP analytics <br class="hidden sm:inline" />
+                <span class="text-slate-400 font-normal">and </span>capital-support information<span class="text-slate-400 font-normal"> for eligible users.</span>
+            </h1>
+            <div class="w-16 h-0.5 bg-emerald-500 mt-2.5 rounded"></div>
+        </div>
+
+        <!-- Features -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" id="why-us">
+            <div class="glass-card rounded-2xl p-6 text-center flex flex-col items-center transition duration-300">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mb-4">
+                    <i data-lucide="zap" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Automated API Updates</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Syncs directly with market endpoints to deliver real-time GMP, subscription statuses, and key dates instantly.</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 text-center flex flex-col items-center transition duration-300">
+                <div class="w-14 h-14 rounded-2xl bg-teal-500/15 border border-teal-500/30 text-teal-400 flex items-center justify-center mb-4">
+                    <i data-lucide="shield" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Capital Support</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Explore our capital-support model for eligible users with verified agreement and structured settlement.</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 text-center flex flex-col items-center transition duration-300">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mb-4">
+                    <i data-lucide="users" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Direct Founder Advisory</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Get personalized guidance directly from founders <strong class="text-emerald-400">Animesh Santra</strong> & <strong class="text-emerald-400">Arihant Jain</strong>.</p>
+            </div>
+        </div>
+
+        <!-- Indicators -->
+        <div class="flex flex-wrap items-center gap-3 mb-8 text-xs font-medium">
+            <div class="bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 px-4 py-2 rounded-full flex items-center gap-2 font-bold tracking-wide">
+                <span class="pulse-dot"></span> MAINBOARD IPOs ONLY
+            </div>
+            <div class="glass-card px-4 py-2 rounded-full text-slate-300 flex items-center gap-2">
+                <span id="feed-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span id="feed-status-text">NSE/BSE IPO Feed: Connected</span>
+            </div>
+            <div class="glass-card px-4 py-2 rounded-full text-slate-400 flex items-center gap-2">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
+                Last Updated: <span class="text-emerald-400 font-semibold" id="lastUpdatedTime">Syncing...</span>
+            </div>
+            <div class="glass-card px-4 py-2 rounded-full text-slate-400 flex items-center gap-2">
+                <i data-lucide="line-chart" class="w-3.5 h-3.5 text-slate-400"></i>
+                GMP: <span class="text-emerald-400 font-semibold">Unofficial / Indicative</span>
+            </div>
+        </div>
+
+        <!-- Counters -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+            <div class="glass-card rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden">
+                <div class="w-14 h-14 rounded-xl bg-emerald-500 flex items-center justify-center text-white"><i data-lucide="file-text" class="w-7 h-7"></i></div>
+                <div><div class="text-3xl font-extrabold text-white" id="count-open">0</div><div class="text-xs text-slate-400">Open IPOs</div></div>
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-500"></div>
+            </div>
+            <div class="glass-card rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden">
+                <div class="w-14 h-14 rounded-xl bg-blue-600 flex items-center justify-center text-white"><i data-lucide="calendar" class="w-7 h-7"></i></div>
+                <div><div class="text-3xl font-extrabold text-white" id="count-upcoming">0</div><div class="text-xs text-slate-400">Upcoming IPOs</div></div>
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-blue-600"></div>
+            </div>
+            <div class="glass-card rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden">
+                <div class="w-14 h-14 rounded-xl bg-purple-600 flex items-center justify-center text-white"><i data-lucide="check-circle" class="w-7 h-7"></i></div>
+                <div><div class="text-3xl font-extrabold text-white" id="count-closed">0</div><div class="text-xs text-slate-400">Recent Closed IPOs</div></div>
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-purple-600"></div>
+            </div>
+            <div class="glass-card rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden">
+                <div class="w-14 h-14 rounded-xl bg-amber-500 flex items-center justify-center text-white"><i data-lucide="trending-up" class="w-7 h-7"></i></div>
+                <div><div class="text-3xl font-extrabold text-white" id="count-total">0</div><div class="text-xs text-slate-400">Total Tracked</div></div>
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-amber-500"></div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="live-ipo" class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-chart-simple text-emerald-400"></i> Mainboard IPOs Dashboard
+            </h2>
+            <span class="text-xs text-emerald-400 bg-emerald-950/70 border border-emerald-500/30 px-3 py-1.5 rounded-full w-fit flex items-center gap-2">
+                <span class="pulse-dot"></span> <span id="visible-count">Syncing Live Data...</span>
+            </span>
+        </div>
+
+        <!-- Filter & Search -->
+        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-6">
+            <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="ipo-search" placeholder="Search Mainboard IPO name..." class="w-full bg-[#08121f]/90 border border-slate-700/60 text-slate-200 pl-11 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 transition">
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button class="tab-btn active px-4 py-2 rounded-xl text-xs bg-[#08121f]/90 border border-slate-700/60 text-slate-300 hover:border-emerald-500 transition" data-filter="all">All Mainboard</button>
+                <button class="tab-btn px-4 py-2 rounded-xl text-xs bg-[#08121f]/90 border border-slate-700/60 text-slate-300 hover:border-emerald-500 transition" data-filter="Open">Apply Open</button>
+                <button class="tab-btn px-4 py-2 rounded-xl text-xs bg-[#08121f]/90 border border-slate-700/60 text-slate-300 hover:border-emerald-500 transition" data-filter="Upcoming">Upcoming</button>
+                <button class="tab-btn px-4 py-2 rounded-xl text-xs bg-[#08121f]/90 border border-slate-700/60 text-slate-300 hover:border-emerald-500 transition" data-filter="Closed">Closed</button>
+            </div>
+        </div>
+
+        <!-- IPO Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" id="ipo-grid"></div>
+
+        <!-- Capital Funding Support -->
+        <section class="glass-card rounded-3xl p-8 mb-16 border border-emerald-500/30 relative overflow-hidden" id="funding">
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 mb-3">
+                    <i class="fa-solid fa-hand-holding-dollar text-2xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-3">Apply For High-Return IPOs With Zero Capital!</h2>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                    Facing funds shortage? <strong>GROWWBONDHU</strong> provides complete IPO funding support. We fund 100% of the application capital, and upon successful allotment, you receive a net profit payout!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-[#050b14]/80 p-5 rounded-2xl border border-slate-800 text-center">
+                    <i class="fa-solid fa-piggy-bank text-emerald-400 text-2xl mb-2"></i>
+                    <h4 class="font-bold text-white text-sm mb-1">Zero Investment</h4>
+                    <p class="text-xs text-slate-400">Complete application capital is 100% funded by us.</p>
+                </div>
+                <div class="bg-[#050b14]/80 p-5 rounded-2xl border border-slate-800 text-center">
+                    <i class="fa-solid fa-chart-line text-emerald-400 text-2xl mb-2"></i>
+                    <h4 class="font-bold text-white text-sm mb-1">15% Profit Payout</h4>
+                    <p class="text-xs text-slate-400">Receive guaranteed 15% share directly on listing gains.</p>
+                </div>
+                <div class="bg-[#050b14]/80 p-5 rounded-2xl border border-slate-800 text-center">
+                    <i class="fa-solid fa-shield-halved text-emerald-400 text-2xl mb-2"></i>
+                    <h4 class="font-bold text-white text-sm mb-1">Zero Loss Risk</h4>
+                    <p class="text-xs text-slate-400">In case of listing loss, all liability is fully absorbed by us.</p>
+                </div>
+                <div class="bg-[#050b14]/80 p-5 rounded-2xl border border-slate-800 text-center">
+                    <i class="fa-solid fa-user-check text-emerald-400 text-2xl mb-2"></i>
+                    <h4 class="font-bold text-white text-sm mb-1">Seamless Process</h4>
+                    <p class="text-xs text-slate-400">Monetize idle Demat accounts effortlessly.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="openExecutiveModal('whatsapp', 'Mainboard Funding Inquiry')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-xl flex items-center gap-2 transition">
+                    <i class="fa-brands fa-whatsapp text-base"></i> Apply via WhatsApp Support
+                </button>
+                <button onclick="openExecutiveModal('call')" class="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-xl flex items-center gap-2 transition border border-slate-700">
+                    <i class="fa-solid fa-phone text-base text-emerald-400"></i> Call Executive Directly
+                </button>
+            </div>
+        </section>
+
+        <!-- Query Form -->
+        <section class="glass-card rounded-3xl p-8 mb-12 max-w-2xl mx-auto" id="query">
+            <h3 class="text-xl font-bold text-white text-center mb-1">Have Any Questions? Ask An Executive</h3>
+            <p class="text-xs text-slate-400 text-center mb-6">Our founders are available directly on WhatsApp and Email for guidance</p>
+            
+            <form class="space-y-4" id="queryForm">
+                <input type="text" id="userName" placeholder="Your Full Name" required class="w-full bg-[#050b14]/90 border border-slate-700 text-slate-200 p-3.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500">
+                <input type="tel" id="userPhone" placeholder="Your Mobile Number" required class="w-full bg-[#050b14]/90 border border-slate-700 text-slate-200 p-3.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500">
+                <textarea id="userQuestion" rows="3" placeholder="Type your query regarding any IPO, allotment, or funding..." required class="w-full bg-[#050b14]/90 border border-slate-700 text-slate-200 p-3.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></textarea>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Submit Query To Executives
+                </button>
+            </form>
+        </section>
+
+        <!-- Disclaimer -->
+        <div class="glass-card rounded-2xl p-5 text-xs text-slate-400 leading-relaxed mb-6 border-slate-800">
+            <p class="mb-2"><strong class="text-emerald-400">Disclaimer:</strong> GROWWBONDHU is an informational portal and is NOT registered with SEBI. All details and GMPs are for educational purposes.</p>
+            <p>Estimated GMP values are unofficial market indicators and do not guarantee actual listing returns. Consult a certified advisor before taking investment decisions.</p>
+        </div>
+
+    </main>
+
+    <!-- Modal for Policy -->
+    <div id="policyModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden items-center justify-center p-4">
+        <div class="bg-[#09111c] border border-slate-700/80 rounded-3xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800/80 bg-[#060b13]">
+                <div class="flex items-center gap-2.5">
+                    <div id="policyIconContainer" class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
+                        <i id="policyIcon" class="fa-solid fa-shield-halved text-sm"></i>
+                    </div>
+                    <h3 id="policyModalTitle" class="text-lg font-bold text-white tracking-wide">Information</h3>
+                </div>
+                <button onclick="closePolicyModal()" class="w-8 h-8 rounded-full bg-slate-800/80 text-slate-400 hover:text-white flex items-center justify-center transition border border-slate-700">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+            <div id="policyModalBody" class="p-6 overflow-y-auto custom-scrollbar text-xs sm:text-sm text-slate-300 leading-relaxed space-y-4"></div>
+            <div class="px-6 py-3.5 border-t border-slate-800/80 bg-[#060b13] flex justify-between items-center text-xs text-slate-400">
+                <span>GROWWBONDHU Official Guidelines</span>
+                <button onclick="closePolicyModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-1.5 rounded-lg transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-[#0d1623] border border-slate-700 rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center">
+            <h3 id="modalTitle" class="text-lg font-bold text-white mb-1">Select Executive</h3>
+            <p id="modalDesc" class="text-xs text-slate-400 mb-5">Choose an executive to proceed with your request</p>
+            <div id="modalOptions" class="space-y-3 mb-4"></div>
+            <button onclick="closeModal()" class="text-xs text-slate-400 hover:text-white transition font-medium">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-4 px-6 bg-[#05090f]/90 text-xs relative z-10">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400">
+            <div>© 2026 <strong class="text-white">GROWW BONDHU</strong>. All rights reserved.</div>
+            <div class="flex flex-wrap items-center gap-3">
+                <a href="javascript:void(0)" onclick="openPolicyPage('about')" class="hover:text-emerald-400 transition">About Us</a>
+                <span>|</span>
+                <a href="javascript:void(0)" onclick="openPolicyPage('terms')" class="text-emerald-400 hover:underline">Terms</a>
+                <span>|</span>
+                <a href="javascript:void(0)" onclick="openPolicyPage('legal')" class="text-emerald-400 hover:underline">Disclosure</a>
+                <span>|</span>
+                <a href="javascript:void(0)" onclick="openPolicyPage('privacy')" class="hover:text-emerald-400 transition">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        const executives = [
+            { name: "Animesh Santra", phone: "919775687432" },
+            { name: "Arihant Jain", phone: "918100669957" }
+        ];
+
+        const defaultFallbackData = [
+            { name: "Premier Energies Ltd", status: "Closed", priceBand: "₹427 - ₹450", gmp: "₹385 (85%)", issueSize: "₹2,830 Cr", lotSize: "33 Shares", openDate: "27 Aug", closeDate: "29 Aug", subQIB: "216.7x", subNII: "50.1x", subRetail: "7.4x", subTotal: "74.4x" },
+            { name: "ECOS India Mobility", status: "Closed", priceBand: "₹318 - ₹334", gmp: "₹160 (48%)", issueSize: "₹601 Cr", lotSize: "44 Shares", openDate: "28 Aug", closeDate: "30 Aug", subQIB: "136.8x", subNII: "71.2x", subRetail: "19.7x", subTotal: "64.2x" },
+            { name: "Bajaj Housing Finance", status: "Upcoming", priceBand: "₹66 - ₹70", gmp: "₹55 (78%)", issueSize: "₹6,560 Cr", lotSize: "214 Shares", openDate: "09 Sep", closeDate: "11 Sep", subQIB: "-", subNII: "-", subRetail: "-", subTotal: "Upcoming" }
+        ];
+
+        const policyDatabase = {
+            about: {
+                title: "About GROWWBONDHU",
+                icon: "fa-solid fa-circle-info",
+                content: `<p class="text-xs text-slate-300">GROWWBONDHU is a specialized financial analysis and capital assistance platform dedicated exclusively to Indian Mainboard IPOs.</p>`
+            },
+            terms: {
+                title: "Terms & Conditions",
+                icon: "fa-solid fa-file-contract",
+                content: `<p class="text-xs text-slate-300">Capital funding and profit-sharing terms apply as per signed execution agreements.</p>`
+            },
+            legal: {
+                title: "Legal & SEBI Disclosure",
+                icon: "fa-solid fa-scale-balanced",
+                content: `<p class="text-xs text-slate-300">GROWWBONDHU is an educational portal and not a registered SEBI Research Analyst/Advisor.</p>`
+            },
+            privacy: {
+                title: "Privacy Policy",
+                icon: "fa-solid fa-user-shield",
+                content: `<p class="text-xs text-slate-300">User phone numbers and queries are secured and used solely for direct executive contact.</p>`
+            }
+        };
+
+        function openPolicyPage(type) {
+            const data = policyDatabase[type];
+            if (!data) return;
+            document.getElementById('policyModalTitle').textContent = data.title;
+            document.getElementById('policyIcon').className = data.icon + " text-sm";
+            document.getElementById('policyModalBody').innerHTML = data.content;
+            document.getElementById('policyModal').style.display = 'flex';
+        }
+
+        function closePolicyModal() {
+            document.getElementById('policyModal').style.display = 'none';
+        }
+
+        async function fetchAutoIPOData() {
+            try {
+                const response = await fetch('http://localhost:5000/api/ipos', { signal: AbortSignal.timeout(8000) });
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                const liveData = await response.json();
+                if (Array.isArray(liveData) && liveData.length > 0) return liveData;
+                return defaultFallbackData;
+            } catch (error) {
+                console.warn("Backend not reached / API timed out. Displaying fallback data.", error);
+                const dot = document.getElementById('feed-status-dot');
+                const text = document.getElementById('feed-status-text');
+                if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-amber-500";
+                if (text) text.innerHTML = "IPO Feed: <span class='text-amber-400 font-semibold'>Cached/Fallback</span>";
+                return defaultFallbackData;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            lucide.createIcons();
+            
+            const gridContainer = document.getElementById('ipo-grid');
+            const searchInput = document.getElementById('ipo-search');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const visibleCountSpan = document.getElementById('visible-count');
+            const queryForm = document.getElementById('queryForm');
+            const lastUpdatedTime = document.getElementById('lastUpdatedTime');
+
+            let ipoData = await fetchAutoIPOData();
+            let currentFilter = 'all';
+
+            const now = new Date();
+            lastUpdatedTime.textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) + `, ` + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            function updateSummaryCounts(data) {
+                document.getElementById('count-open').textContent = data.filter(x => x.status === 'Open').length;
+                document.getElementById('count-upcoming').textContent = data.filter(x => x.status === 'Upcoming').length;
+                document.getElementById('count-closed').textContent = data.filter(x => x.status === 'Closed').length;
+                document.getElementById('count-total').textContent = data.length;
+            }
+
+            function renderCards(data) {
+                gridContainer.innerHTML = '';
+                let count = 0;
+
+                data.forEach((ipo) => {
+                    let statusBg = 'bg-emerald-950/70 text-emerald-400 border border-emerald-500/30';
+                    if (ipo.status === 'Upcoming') statusBg = 'bg-cyan-950/70 text-cyan-400 border border-cyan-500/30';
+                    if (ipo.status === 'Closed') statusBg = 'bg-rose-950/70 text-rose-400 border border-rose-500/30';
+
+                    let actionButtonsHTML = (ipo.status === 'Closed')
+                        ? `<div class="pt-2 border-t border-slate-800/80">
+                               <button onclick="openExecutiveModal('whatsapp', 'Listing Strategy for ${ipo.name}')" class="w-full bg-[#081525] hover:bg-slate-800 text-cyan-400 font-semibold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 border border-cyan-500/40">
+                                   <i class="fa-solid fa-arrow-trend-up text-sm"></i> Discuss Listing Strategy
+                               </button>
+                           </div>`
+                        : `<div class="flex gap-2 pt-2 border-t border-slate-800/80">
+                               <button onclick="openExecutiveModal('whatsapp', '${ipo.name}')" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40">
+                                   <i class="fa-brands fa-whatsapp text-sm"></i> Analysis
+                               </button>
+                               <button onclick="openExecutiveModal('call')" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 py-2.5 px-4 rounded-xl text-xs flex items-center justify-center border border-slate-700">
+                                   <i class="fa-solid fa-phone"></i>
+                               </button>
+                           </div>`;
+
+                    gridContainer.innerHTML += `
+                        <div class="glass-card rounded-2xl p-5 flex flex-col justify-between hover:border-emerald-500/40 transition duration-300">
+                            <div>
+                                <div class="flex items-start justify-between border-b border-slate-800/80 pb-3 mb-4">
+                                    <div class="font-bold text-white text-base leading-snug">${ipo.name}</div>
+                                    <div class="flex flex-col items-end gap-1.5 shrink-0 ml-2">
+                                        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-blue-950/70 text-blue-400 border border-blue-500/30">MAINBOARD</span>
+                                        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${statusBg}">${ipo.status}</span>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 text-xs mb-4">
+                                    <div><span class="text-slate-400 block text-[10px] uppercase font-semibold">Price Band</span><strong class="text-white">${ipo.priceBand}</strong></div>
+                                    <div><span class="text-slate-400 block text-[10px] uppercase font-semibold">Est. GMP</span><strong class="text-emerald-400">${ipo.gmp}</strong></div>
+                                    <div><span class="text-slate-400 block text-[10px] uppercase font-semibold">Issue Size</span><strong class="text-slate-200">${ipo.issueSize}</strong></div>
+                                    <div><span class="text-slate-400 block text-[10px] uppercase font-semibold">Lot Size</span><strong class="text-slate-200">${ipo.lotSize}</strong></div>
+                                    <div><span class="text-slate-400 block text-[10px] uppercase font-semibold">Open Date</span><strong class="text-slate-300">${ipo.openDate}</strong></div>
+                                    <div><span class="text-slate-400 block text-[10px] uppercase font-semibold">Close Date</span><strong class="text-slate-300">${ipo.closeDate}</strong></div>
+                                </div>
+
+                                <div class="bg-[#08121f]/90 border border-emerald-500/20 text-emerald-400 text-xs font-semibold py-2 px-3 rounded-xl text-center mb-3">
+                                    <i class="fa-solid fa-chart-line mr-1"></i> Live Est. GMP: ${ipo.gmp}
+                                </div>
+
+                                <div class="grid grid-cols-4 gap-1 text-center bg-[#070e18]/90 p-2 rounded-xl border border-slate-800 text-[11px] mb-4">
+                                    <div><span class="text-slate-400 block text-[9px]">QIB</span><strong class="text-white">${ipo.subQIB}</strong></div>
+                                    <div><span class="text-slate-400 block text-[9px]">NII</span><strong class="text-white">${ipo.subNII}</strong></div>
+                                    <div><span class="text-slate-400 block text-[9px]">Retail</span><strong class="text-white">${ipo.subRetail}</strong></div>
+                                    <div><span class="text-slate-400 block text-[9px]">Total</span><strong class="text-emerald-400 font-bold">${ipo.subTotal}</strong></div>
+                                </div>
+                            </div>
+                            ${actionButtonsHTML}
+                        </div>
+                    `;
+                    count++;
+                });
+
+                visibleCountSpan.textContent = `${count} Mainboard IPOs`;
+            }
+
+            function filterData() {
+                const query = searchInput.value.trim().toLowerCase();
+                const filtered = ipoData.filter(ipo => {
+                    const matchesSearch = ipo.name.toLowerCase().includes(query);
+                    let matchesTab = (currentFilter === 'all') || (ipo.status.toLowerCase() === currentFilter.toLowerCase());
+                    return matchesSearch && matchesTab;
+                });
+                renderCards(filtered);
+            }
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.getAttribute('data-filter');
+                    filterData();
+                });
+            });
+
+            searchInput.addEventListener('input', filterData);
+
+            queryForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('userName').value;
+                const phone = document.getElementById('userPhone').value;
+                const question = document.getElementById('userQuestion').value;
+                openExecutiveModal('whatsapp', `Query from ${name} (${phone}): ${question}`);
+            });
+
+            updateSummaryCounts(ipoData);
+            renderCards(ipoData);
+        });
+
+        function openExecutiveModal(mode, customText = "") {
+            const modal = document.getElementById('contactModal');
+            const optionsContainer = document.getElementById('modalOptions');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDesc');
+
+            optionsContainer.innerHTML = '';
+
+            if (mode === 'call') {
+                modalTitle.textContent = "Select Executive to Call";
+                modalDesc.textContent = "Choose who you would like to call directly:";
+
+                executives.forEach(exec => {
+                    optionsContainer.innerHTML += `
+                        <a href="tel:${exec.phone}" class="flex items-center justify-between p-3 rounded-xl bg-[#08121f] border border-slate-700/80 hover:border-emerald-500 text-slate-200 font-semibold text-xs transition">
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-phone text-emerald-400"></i> ${exec.name}</span>
+                            <i class="fa-solid fa-chevron-right text-slate-500"></i>
+                        </a>
+                    `;
+                });
+            } else if (mode === 'whatsapp') {
+                modalTitle.textContent = "Select Executive on WhatsApp";
+                modalDesc.textContent = "Choose an executive to send your request:";
+
+                const msg = encodeURIComponent(`Hello GROWWBONDHU, I need Information regarding: ${customText}`);
+                executives.forEach(exec => {
+                    optionsContainer.innerHTML += `
+                        <a href="https://wa.me/${exec.phone}?text=${msg}" target="_blank" onclick="closeModal()" class="flex items-center justify-between p-3 rounded-xl bg-[#08121f] border border-slate-700/80 hover:border-emerald-500 text-slate-200 font-semibold text-xs transition">
+                            <span class="flex items-center gap-2"><i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> ${exec.name}</span>
+                            <i class="fa-solid fa-chevron-right text-slate-500"></i>
+                        </a>
+                    `;
+                });
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
